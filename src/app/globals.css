@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #07080a;
+  --panel: #14161b;
+  --panel2: #1b1e25;
+  --line: #262a33;
+  --muted: #9aa0aa;
+  --dim: #5d636e;
+  --cyan: #25f4ee;
+  --red: #fe2c55;
+  --ok: #3ddc97;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel2: var(--panel2);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-dim: var(--dim);
+  --color-cyan: var(--cyan);
+  --color-red: var(--red);
+  --color-ok: var(--ok);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  background: var(--bg);
+  color: #fff;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Hint ring on whichever phone control advances the story */
+@keyframes hot-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 244, 238, 0.75);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(37, 244, 238, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 244, 238, 0);
   }
 }
+.hot {
+  animation: hot-ring 1.5s ease-out infinite;
+}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes drift {
+  0% {
+    transform: translate3d(-10%, -6%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(12%, 8%, 0) scale(1.25);
+  }
+  100% {
+    transform: translate3d(-10%, -6%, 0) scale(1);
+  }
+}
+.blob {
+  animation: drift 9s ease-in-out infinite;
+  filter: blur(40px);
+}
+
+@keyframes ticker {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+.ticker {
+  animation: ticker 14s linear infinite;
+}
+
+@keyframes pulse-pin {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.pin-pulse {
+  animation: pulse-pin 1.8s ease-out infinite;
+}
+
+@keyframes pop-in {
+  from {
+    transform: translateY(14px) scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.pop-in {
+  animation: pop-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.fade-in {
+  animation: fade-in 0.28s ease-out both;
+}
+
+.maplibregl-ctrl-attrib {
+  background: rgba(7, 8, 10, 0.6) !important;
+  color: #9aa0aa !important;
+}
+.maplibregl-ctrl-attrib a {
+  color: #9aa0aa !important;
+}
+
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hide {
+  scrollbar-width: none;
 }

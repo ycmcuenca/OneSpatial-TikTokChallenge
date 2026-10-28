@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TikTok Relay Simulator
 
-## Getting Started
+Interactive simulator for the One Spatial pitch (ByteDance Business Challenge, TikTok Global E-Commerce).
+It follows "Eager Earl", a student in Cebu City, through a COD order and shows how **Prevent**, **Optimize**
+and **Protect** change the outcome.
 
-First, run the development server:
+- **Desktop (≥1024px):** left third is the TikTok app in a phone body; right two thirds is a live map with
+  the caption, simulated clock, rider app, and impact cards.
+- **Mobile:** the app only, full-screen, with a collapsible floating control pill.
+
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Next.js 16 · TypeScript · Tailwind v4 · Zustand · MapLibre GL (react-map-gl) · CARTO Dark Matter basemap (no API key).
+The map needs internet for tiles; everything else works offline.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Using it
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Tap the highlighted (pulsing) control on the phone, or use **Next**. Some taps are free choices that branch the
+story (delivery window, instructions, COD vs GCash, keep vs cancel in the cooling window, size exchange).
 
-## Learn More
+| Key | Action |
+| --- | --- |
+| `←` / `→` | Previous / next step |
+| `Space` | Autoplay |
+| `1`–`6` | Jump to chapter (Intro, Baseline, Prevent, Optimize, Protect, Impact) |
+| `R` / `M` / `Esc` | Restart / mute / close dialog |
 
-To learn more about Next.js, take a look at the following resources:
+Deep links: `/?ch=prevent&step=confirm` (chapter id plus step id, or a 1-based step number).
+Sound is muted by default.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Where things live
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Path | What |
+| --- | --- |
+| `src/sim/chapters.ts` | The whole story as data: phone screen, map state, clock, caption, impact card per step |
+| `src/sim/store.ts` | Zustand state machine (steps, branching via `when`, choices, unlocked levers) |
+| `src/sim/geo.ts`, `src/data/routes.json` | Pre-baked routes, pins, camera bounds |
+| `scripts/build-routes.mjs` | One-off generator for `routes.json` (OSRM road legs plus hand-drawn sea/air legs) |
+| `src/components/phone/` | Phone frame and app screens |
+| `src/components/map/SimMap.tsx` | MapLibre map, actors, pins |
+| `src/components/shell/` | Top bar, caption, HUD, rider card, mobile controls, About |
 
-## Deploy on Vercel
+## Content notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Figures are shown as each slide states them. The three lever values are **not** summed in the app; the
+  ₱1.45B figure is labelled "Total deck claim", as on slide 5.
+- Names, the dorm address, rider ("Kuya Jun"), and order IDs are fictional. A&B Express and XYZ Express come from the deck.
+- The sea lane is a stylised path, not a real shipping route.
