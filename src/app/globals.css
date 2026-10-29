@@ -9,7 +9,12 @@
   --dim: #5d636e;
   --cyan: #25f4ee;
   --red: #fe2c55;
-  --ok: #3ddc97;
+  --red-ink: #ff7b93; /* red for text on dark surfaces: 4.5:1+ where --red is not */
+  --ok: #58e088;
+  /* Card surfaces tinted toward the meaning they carry: loss, recovered value, Relay/info */
+  --surface-loss: #170b10;
+  --surface-gain: #0a1710;
+  --surface-info: #0a1519;
 }
 
 @theme inline {
@@ -21,8 +26,39 @@
   --color-dim: var(--dim);
   --color-cyan: var(--cyan);
   --color-red: var(--red);
+  --color-red-ink: var(--red-ink);
   --color-ok: var(--ok);
+  --color-surface-loss: var(--surface-loss);
+  --color-surface-gain: var(--surface-gain);
+  --color-surface-info: var(--surface-info);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /*
+   * Type roles for the map-side shell (rem, so browser font settings scale it).
+   * The phone mock stays in px: it is a fixed 390pt canvas scaled as a whole.
+   * Light-on-dark: prose gets slightly more leading and tracking than the face default.
+   */
+  --text-figure: 2rem; /* headline money figures */
+  --text-figure--line-height: 1;
+  --text-figure--letter-spacing: -0.025em;
+  --text-figure--font-weight: 800;
+  --text-readout: 1.25rem; /* the simulated clock */
+  --text-readout--line-height: 1.2;
+  --text-readout--letter-spacing: -0.01em;
+  --text-readout--font-weight: 800;
+  --text-heading: 1.0625rem; /* card and step titles */
+  --text-heading--line-height: 1.3;
+  --text-heading--letter-spacing: -0.01em;
+  --text-heading--font-weight: 700;
+  --text-body: 0.875rem; /* captions, running copy */
+  --text-body--line-height: 1.55;
+  --text-body--letter-spacing: 0.005em;
+  --text-data: 0.8125rem; /* rows, controls, rider lines */
+  --text-data--line-height: 1.4;
+  --text-data--letter-spacing: 0.005em;
+  --text-label: 0.75rem; /* metadata, notes, map labels: the floor */
+  --text-label--line-height: 1.35;
+  --text-label--letter-spacing: 0.01em;
 }
 
 html,
@@ -30,6 +66,7 @@ body {
   background: var(--bg);
   color: #fff;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-optical-sizing: auto;
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -111,6 +148,18 @@ button {
   animation: pop-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+@keyframes cliff-flash {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.cliff-flash {
+  animation: cliff-flash 0.9s ease-out both;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -136,4 +185,11 @@ button {
 }
 .scroll-hide {
   scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cliff-flash {
+    animation: none;
+    opacity: 0;
+  }
 }

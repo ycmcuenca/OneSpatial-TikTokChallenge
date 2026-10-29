@@ -16,7 +16,7 @@ function Blobs({ a, b, c }: { a: string; b: string; c: string }) {
 
 function RightRail({ likes, comments }: { likes: string; comments: string }) {
   return (
-    <div className="absolute bottom-[190px] right-3 z-10 flex flex-col items-center gap-4 text-[11px] font-semibold">
+    <div className="absolute bottom-[190px] right-3 z-10 flex flex-col items-center gap-4 text-[12px] font-semibold">
       <div className="grid h-11 w-11 place-items-center rounded-full border-2 border-white bg-gradient-to-br from-pink-400 to-orange-300 text-lg">👩</div>
       {[
         { icon: "heart", label: likes },
@@ -24,7 +24,7 @@ function RightRail({ likes, comments }: { likes: string; comments: string }) {
         { icon: "share", label: "Share" },
       ].map((b) => (
         <div key={b.icon} className="flex flex-col items-center gap-1">
-          <Icon name={b.icon} size={28} fill={b.icon === "heart"} className={b.icon === "heart" ? "text-red" : "text-white"} />
+          <Icon name={b.icon} size={28} fill={b.icon === "heart"} className={b.icon === "heart" ? "text-red-ink" : "text-white"} />
           <span>{b.label}</span>
         </div>
       ))}
@@ -45,10 +45,10 @@ export function FeedScreen({ mode }: { mode?: string }) {
       <div className="absolute inset-x-0 bottom-[78px] z-10 bg-gradient-to-t from-black/80 to-transparent px-4 pb-3 pt-16">
         {mode === "pin" ? (
           <Hot id="pin" className="mb-3 flex w-[84%] items-center gap-3 rounded-2xl bg-white/95 p-2.5 text-left text-black shadow-xl">
-            <span className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-violet-200 to-cyan-200 text-2xl">🎧</span>
+            <span className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-rose-200 to-cyan-200 text-2xl">🎧</span>
             <span className="min-w-0 flex-1">
               <span className="block truncate text-[13px] font-bold">Wireless Earbuds · 30h battery</span>
-              <span className="block text-[13px] font-extrabold text-red">₱1,499 <span className="font-normal text-black/40 line-through">₱2,499</span></span>
+              <span className="block text-[13px] font-extrabold text-red-ink">₱1,499 <span className="font-normal text-black/40 line-through">₱2,499</span></span>
             </span>
             <span className="rounded-full bg-red px-3 py-1.5 text-[12px] font-bold text-white">Shop</span>
           </Hot>
@@ -101,7 +101,7 @@ export function LiveScreen() {
         </div>
       </div>
       <div className="absolute inset-x-3 bottom-4 z-10 rounded-3xl bg-black/75 p-3 backdrop-blur">
-        <div className="mb-2 flex items-center justify-between text-[11px] font-bold">
+        <div className="mb-2 flex items-center justify-between text-[12px] font-bold">
           <span className="rounded-full bg-red px-2 py-0.5">⚡ FLASH SALE</span>
           <span className="tabular-nums text-yellow-300">Ends in 00:{String(left).padStart(2, "0")}</span>
         </div>
@@ -109,8 +109,8 @@ export function LiveScreen() {
           <span className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-orange-200 to-pink-300 text-3xl">👟</span>
           <div className="min-w-0 flex-1">
             <div className="truncate text-[14px] font-bold">Court Low Sneakers · Unisex</div>
-            <div className="text-[15px] font-extrabold text-red">₱599 <span className="text-[12px] font-normal text-white/40 line-through">₱1,299</span></div>
-            <div className="text-[11px] text-white/50">Only 7 pairs left · COD available</div>
+            <div className="text-[15px] font-extrabold text-red-ink">₱599 <span className="text-[12px] font-normal text-white/60 line-through">₱1,299</span></div>
+            <div className="text-[12px] text-white/60">Only 7 pairs left · COD available</div>
           </div>
         </div>
         <Hot id="buy-live" className="mt-3 w-full rounded-full bg-red py-3 text-center text-[15px] font-extrabold">
@@ -129,19 +129,19 @@ export function ProductScreen() {
         <div className="flex-1 truncate rounded-full bg-white/10 px-3 py-1.5 text-[13px] text-white/60">Wireless Earbuds</div>
         <Icon name="bag" />
       </div>
-      <div className="relative grid h-[250px] place-items-center overflow-hidden bg-gradient-to-br from-violet-500/40 via-fuchsia-500/20 to-cyan-400/30 text-[100px]">
+      <div className="relative grid h-[250px] place-items-center overflow-hidden bg-gradient-to-br from-rose-500/35 via-rose-400/10 to-cyan-400/30 text-[100px]">
         🎧
-        <span className="absolute bottom-3 right-3 rounded-full bg-black/50 px-2.5 py-1 text-[11px]">1/6</span>
+        <span className="absolute bottom-3 right-3 rounded-full bg-black/50 px-2.5 py-1 text-[12px]">1/6</span>
       </div>
       <div className="flex-1 overflow-hidden px-4 pt-3">
         <div className="flex items-end gap-2">
-          <span className="text-[26px] font-extrabold text-red">₱1,499</span>
-          <span className="pb-1 text-[13px] text-white/40 line-through">₱2,499</span>
-          <span className="mb-1 rounded bg-red/20 px-1.5 py-0.5 text-[11px] font-bold text-red">-40%</span>
+          <span className="text-[26px] font-extrabold text-red-ink">₱1,499</span>
+          <span className="pb-1 text-[13px] text-white/60 line-through">₱2,499</span>
+          <span className="mb-1 rounded bg-red/20 px-1.5 py-0.5 text-[12px] font-bold text-red-ink">-40%</span>
         </div>
         <div className="mt-1 text-[15px] font-semibold leading-snug">Wireless Earbuds · 30h battery · Bluetooth 5.3</div>
-        <div className="mt-1 text-[12px] text-white/50">★ 4.7 · 12.8K sold · Shipped from Metro Manila</div>
-        <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold">
+        <div className="mt-1 text-[12px] text-white/60">★ 4.7 · 12.8K sold · Shipped from Metro Manila</div>
+        <div className="mt-3 flex flex-wrap gap-2 text-[12px] font-semibold">
           <span className="rounded-full bg-cyan/15 px-2.5 py-1 text-cyan">🚚 Free shipping voucher</span>
           <span className="rounded-full bg-white/10 px-2.5 py-1">💵 Cash on Delivery</span>
           <span className="rounded-full bg-white/10 px-2.5 py-1">7-day returns</span>
@@ -152,11 +152,11 @@ export function ProductScreen() {
         </div>
       </div>
       <div className="flex items-center gap-2 border-t border-white/10 bg-black px-4 pb-8 pt-3">
-        <div className="flex w-16 flex-col items-center gap-0.5 text-[10px] text-white/60">
+        <div className="flex w-16 flex-col items-center gap-0.5 text-[12px] text-white/60">
           <Icon name="chat" size={20} />
           Chat
         </div>
-        <div className="flex w-16 flex-col items-center gap-0.5 text-[10px] text-white/60">
+        <div className="flex w-16 flex-col items-center gap-0.5 text-[12px] text-white/60">
           <Icon name="bag" size={20} />
           Cart
         </div>
@@ -200,8 +200,8 @@ function PayOption({
             {tags.map((t) => (
               <span
                 key={t.text}
-                className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                  t.tone === "cyan" ? "bg-cyan/15 text-cyan" : t.tone === "red" ? "bg-red/15 text-red" : "bg-white/10 text-white/70"
+                className={`rounded-full px-2 py-0.5 text-[12px] font-bold ${
+                  t.tone === "cyan" ? "bg-cyan/15 text-cyan" : t.tone === "red" ? "bg-red/15 text-red-ink" : "bg-white/10 text-white/70"
                 }`}
               >
                 {t.text}
@@ -253,7 +253,7 @@ export function CheckoutScreen({ mode }: { mode?: string }) {
       </div>
       <div className="scroll-hide flex-1 space-y-2.5 overflow-y-auto px-4 pb-3">
         {live && (
-          <div className="flex items-center gap-2 rounded-2xl border border-red/40 bg-red/10 px-3 py-2 text-[12px] font-semibold text-red">
+          <div className="flex items-center gap-2 rounded-2xl border border-red/40 bg-red/10 px-3 py-2 text-[12px] font-semibold text-red-ink">
             <Icon name="shield" size={16} /> High-risk checkout · Fashion via LIVE
           </div>
         )}
@@ -271,7 +271,7 @@ export function CheckoutScreen({ mode }: { mode?: string }) {
             <span className="grid h-14 w-14 place-items-center rounded-xl bg-white/10 text-3xl">{item.emoji}</span>
             <div className="min-w-0 flex-1">
               <div className="truncate font-semibold">{item.name}</div>
-              <div className="text-white/50">Qty 1</div>
+              <div className="text-white/60">Qty 1</div>
             </div>
             <div className="font-extrabold">{item.price}</div>
           </div>
@@ -285,7 +285,7 @@ export function CheckoutScreen({ mode }: { mode?: string }) {
           </div>
         </Row>
 
-        <div className="px-1 pt-1 text-[12px] font-bold uppercase tracking-wide text-white/50">Payment method</div>
+        <div className="px-1 pt-1 text-[12px] font-semibold text-white/65">Payment method</div>
         {live ? (
           <>
             <PayOption

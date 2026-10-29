@@ -149,5 +149,14 @@ export const useStep = () => {
   const step = chapter.steps[stepIdx];
   const visible = chapter.steps.filter((st) => isVisible(st, choices));
   const position = Math.max(0, visible.findIndex((st) => st.id === step.id)) + 1;
-  return { chapter, step, position, total: visible.length };
+  // Steps with no phone tap to make still tell the viewer how to move on
+  const last = chapterId === "impact" && position === visible.length;
+  const hint: { text: string; tap: boolean } | null = step.hint
+    ? { text: step.hint, tap: true }
+    : step.advanceOn?.length
+      ? null
+      : last
+        ? { text: "Press Restart (R) to replay", tap: false }
+        : { text: "Press Next (→) to continue", tap: false };
+  return { chapter, step, position, total: visible.length, hint, last };
 };

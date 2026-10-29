@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local agent tooling and QA screenshots (not part of the app)
+.claude/
+.opencode/
+.impeccable/
+.polish-shots/

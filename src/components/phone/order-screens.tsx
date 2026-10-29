@@ -151,7 +151,7 @@ function viewFor(mode: string | undefined, c: Choices): OrderView {
 
 const toneCls: Record<Tone, string> = {
   normal: "border-white/10 bg-white/[0.04]",
-  fail: "border-red/50 bg-red/10 text-red",
+  fail: "border-red/50 bg-red/10 text-red-ink",
   ok: "border-ok/50 bg-ok/10",
   warn: "border-yellow-400/40 bg-yellow-400/10",
 };
@@ -171,7 +171,7 @@ export function OrdersScreen({ mode }: { mode?: string }) {
             const cur = i === v.stage && v.tone !== "ok";
             const bad = failed && i === v.stage;
             return (
-              <div key={s} className="flex w-[22%] flex-col items-center gap-1 text-center text-[9.5px] text-white/60">
+              <div key={s} className="flex w-[22%] flex-col items-center gap-1 text-center text-[12px] text-white/60">
                 <span
                   className={`grid h-8 w-8 place-items-center rounded-full border-2 ${
                     bad
@@ -193,14 +193,14 @@ export function OrdersScreen({ mode }: { mode?: string }) {
 
         <div className={`rounded-2xl border p-3 ${toneCls[v.tone]}`}>
           <div className="text-[15px] font-extrabold">{v.headline}</div>
-          <div className={`text-[12px] ${failed ? "text-red/80" : "text-white/65"}`}>{v.sub}</div>
+          <div className={`text-[12px] ${failed ? "text-red-ink/80" : "text-white/65"}`}>{v.sub}</div>
           {v.badges && (
             <div className="mt-2 flex flex-wrap gap-1.5">
               {v.badges.map((b) => (
                 <span
                   key={b.text}
-                  className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                    b.tone === "ok" ? "bg-ok/20 text-ok" : b.tone === "red" ? "bg-red/20 text-red" : "bg-cyan/15 text-cyan"
+                  className={`rounded-full px-2 py-0.5 text-[12px] font-bold ${
+                    b.tone === "ok" ? "bg-ok/20 text-ok" : b.tone === "red" ? "bg-red/20 text-red-ink" : "bg-cyan/15 text-cyan"
                   }`}
                 >
                   {b.text}
@@ -232,7 +232,7 @@ export function OrdersScreen({ mode }: { mode?: string }) {
             ],
           ].map(([k, val]) => (
             <div key={k} className="flex justify-between gap-4">
-              <span className="text-white/45">{k}</span>
+              <span className="text-white/60">{k}</span>
               <span className="text-right font-semibold">{val}</span>
             </div>
           ))}
@@ -261,10 +261,10 @@ export function RelayScreen({ mode }: { mode?: string }) {
             <div className="mt-1 text-[12px] text-white/70">High-risk orders are verified automatically before anything ships.</div>
           </div>
           <div className="space-y-2 rounded-2xl border border-white/10 bg-[#101216] p-3 text-[12px]">
-            <div className="flex justify-between"><span className="text-white/45">ORDER ID</span><b>#TTR9F20481</b></div>
-            <div className="flex justify-between"><span className="text-white/45">ITEM</span><b>Court Low Sneakers · Size 8</b></div>
-            <div className="flex justify-between"><span className="text-white/45">ADDRESS</span><b className="text-right">Unit 4B, Casa Verde Dorm, Talamban</b></div>
-            <div className="flex justify-between"><span className="text-white/45">AMOUNT</span><b>₱599.00</b></div>
+            <div className="flex justify-between"><span className="text-white/60">ORDER ID</span><b>#TTR9F20481</b></div>
+            <div className="flex justify-between"><span className="text-white/60">ITEM</span><b>Court Low Sneakers · Size 8</b></div>
+            <div className="flex justify-between"><span className="text-white/60">ADDRESS</span><b className="text-right">Unit 4B, Casa Verde Dorm, Talamban</b></div>
+            <div className="flex justify-between"><span className="text-white/60">AMOUNT</span><b>₱599.00</b></div>
           </div>
           <div className="flex items-center gap-2 rounded-2xl bg-white/5 px-3 py-2 text-[12px]">
             <Icon name="check" size={16} className="text-ok" /> Size-exchange guarantee included
@@ -285,18 +285,18 @@ export function RelayScreen({ mode }: { mode?: string }) {
         {mode === "alert" && (
           <>
             <div className="rounded-2xl border border-red/60 bg-red/10 p-3">
-              <div className="text-[13px] font-extrabold text-red">⚠ IMPORTANT: DELIVERY MORNING CONFIRMATION REQUIRED</div>
+              <div className="text-[13px] font-extrabold text-red-ink">⚠ IMPORTANT: DELIVERY MORNING CONFIRMATION REQUIRED</div>
               <div className="mt-0.5 text-[12px] text-white/70">Today is delivery day. Confirm that someone can receive your parcel.</div>
             </div>
             <div className="space-y-2 rounded-2xl border border-white/10 bg-[#101216] p-3 text-[12px]">
-              <div className="text-[11px] font-extrabold tracking-wide text-cyan">INTENT-LOCK <span className="font-normal text-white/45">· confirm the genuine desire for the order</span></div>
-              <div className="flex justify-between"><span className="text-white/45">ORDER ID</span><b>#TTR8E34710</b></div>
-              <div className="flex justify-between"><span className="text-white/45">ITEMS</span><b>1x Wireless Earbuds 30h</b></div>
-              <div className="flex justify-between"><span className="text-white/45">AMOUNT</span><b>₱1,499.00</b></div>
-              <div className="flex justify-between"><span className="text-white/45">PAYMENT</span><b className="text-right">COD / Digital payment available</b></div>
+              <div className="text-[12px] font-bold text-cyan">Intent-Lock <span className="font-normal text-white/60">· confirm the genuine desire for the order</span></div>
+              <div className="flex justify-between"><span className="text-white/60">ORDER ID</span><b>#TTR8E34710</b></div>
+              <div className="flex justify-between"><span className="text-white/60">ITEMS</span><b>1x Wireless Earbuds 30h</b></div>
+              <div className="flex justify-between"><span className="text-white/60">AMOUNT</span><b>₱1,499.00</b></div>
+              <div className="flex justify-between"><span className="text-white/60">PAYMENT</span><b className="text-right">COD / Digital payment available</b></div>
             </div>
             <div className="rounded-2xl border border-white/10 bg-[#101216] p-3">
-              <div className="mb-2 text-[11px] font-extrabold tracking-wide">LOCKING INTENT &amp; CONFIRMING DELIVERY</div>
+              <div className="mb-2 text-[13px] font-bold">Locking intent &amp; confirming delivery</div>
               <div className="mb-1.5 text-[12px] text-white/60">When can you receive it today?</div>
               <div className="grid grid-cols-3 gap-2">
                 {WINDOWS.map((w) => (
@@ -311,13 +311,13 @@ export function RelayScreen({ mode }: { mode?: string }) {
                   </Hot>
                 ))}
               </div>
-              <Hot id="pay:gcash" className="mt-3 w-full rounded-full bg-gradient-to-r from-[#007cff] to-[#25f4ee] py-3 text-center text-[13px] font-extrabold text-white">
+              <Hot id="pay:gcash" className="mt-3 w-full rounded-full bg-gradient-to-r from-[#007cff] to-[#25f4ee] py-3 text-center text-[13px] font-extrabold text-black">
                 1-TAP PAY WITH GCash · free delivery bonus
               </Hot>
               <Hot id="lock" className="mt-2 w-full rounded-full bg-white/10 py-3 text-center text-[13px] font-extrabold">
                 CONFIRM CASH ON DELIVERY
               </Hot>
-              <div className="mt-1.5 text-center text-[10px] text-white/45">Confirm availability for your {win} window</div>
+              <div className="mt-1.5 text-center text-[12px] text-white/60">Confirm availability for your {win} window</div>
             </div>
           </>
         )}
@@ -330,9 +330,9 @@ export function RelayScreen({ mode }: { mode?: string }) {
               <div className="mt-0.5 text-[12px] text-white/75">You&apos;re available {win} at Gate B. The rider has been notified.</div>
             </div>
             <div className="space-y-2 rounded-2xl border border-white/10 bg-[#101216] p-3 text-[12px]">
-              <div className="flex justify-between"><span className="text-white/45">WINDOW</span><b>{win}</b></div>
-              <div className="flex justify-between"><span className="text-white/45">COURIER</span><b>XYZ Express · Kuya Jun</b></div>
-              <div className="flex justify-between"><span className="text-white/45">PAYMENT</span><b>COD · pay by QR optional</b></div>
+              <div className="flex justify-between"><span className="text-white/60">WINDOW</span><b>{win}</b></div>
+              <div className="flex justify-between"><span className="text-white/60">COURIER</span><b>XYZ Express · Kuya Jun</b></div>
+              <div className="flex justify-between"><span className="text-white/60">PAYMENT</span><b>COD · pay by QR optional</b></div>
             </div>
             <Hot id="open-chat" className="flex w-full items-center justify-center gap-2 rounded-full bg-cyan py-3.5 text-[14px] font-extrabold text-black">
               <Icon name="chat" size={18} /> Message rider
@@ -348,8 +348,8 @@ export function RelayScreen({ mode }: { mode?: string }) {
               <div className="mt-0.5 text-[12px] text-white/75">Kuya Jun is at your gate · {win} window</div>
             </div>
             <div className="space-y-2 rounded-2xl border border-white/10 bg-[#101216] p-3 text-[12px]">
-              <div className="flex justify-between"><span className="text-white/45">ORDER ID</span><b>#TTR8E34710</b></div>
-              <div className="flex justify-between"><span className="text-white/45">AMOUNT DUE</span><b>₱1,499.00</b></div>
+              <div className="flex justify-between"><span className="text-white/60">ORDER ID</span><b>#TTR8E34710</b></div>
+              <div className="flex justify-between"><span className="text-white/60">AMOUNT DUE</span><b>₱1,499.00</b></div>
             </div>
           </>
         )}
@@ -371,16 +371,16 @@ export function ChatScreen({ mode }: { mode?: string }) {
         <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-amber-300 to-orange-500 text-lg">🛵</span>
         <div>
           <div className="text-[14px] font-bold">Kuya Jun</div>
-          <div className="text-[11px] text-ok">XYZ Express · online</div>
+          <div className="text-[12px] text-ok">XYZ Express · online</div>
         </div>
       </div>
       <div className="scroll-hide flex-1 space-y-3 overflow-y-auto px-4 py-4 text-[13px]">
-        <div className="mx-auto w-fit rounded-full bg-white/10 px-3 py-1 text-[11px] text-white/60">Intent-Lock confirmed · {win}</div>
+        <div className="mx-auto w-fit rounded-full bg-white/10 px-3 py-1 text-[12px] text-white/60">Intent-Lock confirmed · {win}</div>
         <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-white/10 px-3 py-2">Magandang umaga po, Earl! Ako si Jun ng XYZ Express. Ihahatid ko po ang earbuds mo today. 🛵</div>
         {sent && (
           <>
             <div className="pop-in ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-cyan/15 p-3">
-              <div className="mb-1 text-[10px] font-extrabold tracking-wide text-cyan">DELIVERY INSTRUCTIONS</div>
+              <div className="mb-1 text-[12px] font-bold text-cyan">Delivery instructions</div>
               <div className="font-semibold">Window: {win}</div>
               <ul className="mt-1 list-disc space-y-0.5 pl-4 text-white/85">
                 {chosen.length ? chosen.map((i) => <li key={i.id}>{i.label}</li>) : <li>No special instructions</li>}
@@ -394,7 +394,7 @@ export function ChatScreen({ mode }: { mode?: string }) {
       </div>
       {!sent && (
         <div className="space-y-2 border-t border-white/10 bg-black px-4 pb-8 pt-3">
-          <div className="text-[11px] font-bold uppercase tracking-wide text-white/50">Quick instructions</div>
+          <div className="text-[12px] font-semibold text-white/65">Quick instructions</div>
           <div className="flex flex-wrap gap-2">
             {INSTRUCTIONS.map((i) => {
               const on = choices.instr.includes(i.id);
@@ -419,34 +419,58 @@ export function ChatScreen({ mode }: { mode?: string }) {
   );
 }
 
+function EarlScreen() {
+  return (
+    <div className="absolute inset-0 flex flex-col overflow-hidden bg-gradient-to-b from-[#0d2a30] via-[#0c0d10] to-[#0c0d10] pt-[56px]">
+      <Brand />
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+        <div className="pop-in grid h-20 w-20 place-items-center rounded-full bg-ok text-black">
+          <Icon name="check" size={40} />
+        </div>
+        <div className="pop-in">
+          <div className="text-[24px] font-extrabold leading-tight">Delivered to Earl</div>
+          <div className="mt-1 text-[13px] text-white/70">Talamban, Cebu City · Day 3, 10:40 AM</div>
+        </div>
+        <div className="w-full rounded-2xl border border-ok/40 bg-ok/10 p-4 text-left">
+          <div className="text-[12px] font-semibold text-white/70">Order</div>
+          <div className="text-[15px] font-bold">Wireless earbuds</div>
+          <div className="mt-2 text-[12px] text-white/70">Paid on delivery · not refused, not returned to sender</div>
+        </div>
+      </div>
+      <TabBar active="relay" />
+    </div>
+  );
+}
+
 export function RecapScreen({ mode }: { mode?: string }) {
+  if (mode === "earl") return <EarlScreen />;
   const total = mode === "total";
   const cards = [
-    { n: "01", t: "PREVENT", s: "Product", d: "Intent-Lock, courier chat, doorstep QR", v: "₱1.171B + ₱410M", c: "text-cyan" },
-    { n: "02", t: "OPTIMIZE", s: "Operations", d: "A&B 24h express for prepaid, GCash rebate", v: "₱423.7M net", c: "text-cyan" },
-    { n: "03", t: "PROTECT", s: "Policy", d: "Cooling window, escrow, category guarantee", v: "₱625M", c: "text-red" },
+    { n: "01", t: "PREVENT", s: "Product", d: "Intent-Lock, courier chat, doorstep QR · plus ₱410M commission recovered", v: "₱1.171B costs saved", c: "text-cyan" },
+    { n: "02", t: "OPTIMIZE", s: "Operations", d: "A&B 24h express for prepaid, GCash rebate", v: "₱423.7M net benefit", c: "text-cyan" },
+    { n: "03", t: "PROTECT", s: "Policy", d: "Cooling window, escrow, category guarantee", v: "₱625M policy value", c: "text-cyan" },
   ];
   return (
     <div className="absolute inset-0 overflow-hidden bg-gradient-to-b from-[#0d2a30] via-[#0c0d10] to-[#0c0d10] pt-[56px]">
       <Brand />
       <div className="space-y-3 px-4 pt-5">
-        <div className="text-center text-[12px] font-semibold uppercase tracking-widest text-white/50">One Spatial · TikTok Global E-Commerce</div>
+        <div className="text-center text-[12px] font-medium text-white/65">One Spatial · TikTok Global E-Commerce</div>
         {cards.map((c) => (
           <div key={c.n} className="rounded-2xl border border-white/10 bg-[#101216] p-3.5">
             <div className="flex items-baseline justify-between">
               <div className={`text-[13px] font-extrabold ${c.c}`}>
-                {c.n} {c.t} <span className="font-medium text-white/45">({c.s})</span>
+                {c.n} {c.t} <span className="font-medium text-white/60">({c.s})</span>
               </div>
-              <div className="text-[13px] font-extrabold">{c.v}</div>
+              <div className="text-[13px] font-extrabold text-ok">{c.v}</div>
             </div>
             <div className="mt-1 text-[12px] text-white/65">{c.d}</div>
           </div>
         ))}
         {total && (
-          <div className="pop-in rounded-2xl border border-red/50 bg-red/10 p-4 text-center">
-            <div className="text-[11px] font-bold uppercase tracking-widest text-white/60">Total deck claim</div>
-            <div className="text-[30px] font-black text-red">₱1.45B / month</div>
-            <div className="text-[11px] text-white/60">Phased pilot cap ~₱1M</div>
+          <div className="pop-in rounded-2xl border border-ok/50 bg-ok/10 p-4 text-center">
+            <div className="text-[12px] font-semibold text-white/70">Total deck claim</div>
+            <div className="text-[30px] font-extrabold tracking-tight tabular-nums text-ok">₱1.45B / month</div>
+            <div className="text-[12px] text-white/60">Not the sum of the three levers · pilot cap ~₱1M</div>
           </div>
         )}
       </div>

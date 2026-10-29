@@ -64,6 +64,10 @@ export interface MapState {
   cities?: boolean;
   riderCard?: RiderCardMode;
   failPulse?: boolean;
+  /** Success pulse on Earl's dorm */
+  winPulse?: boolean;
+  /** Visayas–Mindanao tint: red while the leak is the story, green once Relay has resolved it */
+  region?: "loss" | "gain";
 }
 
 export interface Clock {

@@ -6,7 +6,8 @@ and **Protect** change the outcome.
 
 - **Desktop (≥1024px):** left third is the TikTok app in a phone body; right two thirds is a live map with
   the caption, simulated clock, rider app, and impact cards.
-- **Mobile:** the app only, full-screen, with a collapsible floating control pill.
+- **Phones (portrait):** the app full-screen, with a bottom dock (44px Back/Next, a peek at the step's figure) that opens a sheet with the caption, figures, rider app and clock. Swipe the phone to step.
+- **Tablets and landscape phones (700px+):** the app beside a story column with the same details.
 
 ## Run
 

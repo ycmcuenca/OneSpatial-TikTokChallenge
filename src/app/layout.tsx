@@ -5,7 +5,8 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  // One variable file covers every weight we use; opsz gives the display cut at large sizes.
+  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {

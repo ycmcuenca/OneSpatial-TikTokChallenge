@@ -8,24 +8,37 @@ import type { ChapterId } from "@/sim/types";
 import { PhoneStage } from "./phone/PhoneStage";
 import { About } from "./shell/About";
 import { TopBar } from "./shell/Controls";
-import { Caption, CliffGauge, ClockChip, Hud, LeverTracker, RiderCard } from "./shell/MapOverlays";
-import { MiniControls } from "./shell/MiniControls";
+import { Caption, ClockChip, CliffStage, Hud, LeverTracker, RiderCard } from "./shell/MapOverlays";
+import { MobileDock } from "./shell/MobileDock";
+import { SidePanel } from "./shell/SidePanel";
+import { useSwipe } from "./shell/useSwipe";
 
 const SimMap = dynamic(() => import("./map/SimMap").then((m) => m.SimMap), {
   ssr: false,
   loading: () => <div className="h-full w-full bg-[#0b0c0f]" />,
 });
 
-function useDesktop() {
-  const [desktop, setDesktop] = useState<boolean | null>(null);
+type Layout = "desktop" | "split" | "stack";
+
+/**
+ * desktop: phone + map. split: phone + story column (tablets, landscape phones).
+ * stack: phone with a bottom dock (portrait phones). Breakpoints follow where the layouts run out of room.
+ */
+function useLayout(): Layout | null {
+  const [layout, setLayout] = useState<Layout | null>(null);
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const on = () => setDesktop(mq.matches);
+    const wide = window.matchMedia("(min-width: 1024px)");
+    const mid = window.matchMedia("(min-width: 700px)");
+    const on = () => setLayout(wide.matches ? "desktop" : mid.matches ? "split" : "stack");
     on();
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
+    wide.addEventListener("change", on);
+    mid.addEventListener("change", on);
+    return () => {
+      wide.removeEventListener("change", on);
+      mid.removeEventListener("change", on);
+    };
   }, []);
-  return desktop;
+  return layout;
 }
 
 /** URL deep links, autoplay timer and keyboard shortcuts */
@@ -68,6 +81,7 @@ function useRuntime() {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const s = useSim.getState();
       if (e.key === "Escape") s.setAbout(false);
+      else if (e.key === "?") s.setAbout(true);
       else if (e.key === "ArrowRight") s.next();
       else if (e.key === "ArrowLeft") s.back();
       else if (e.key === " " && el?.tagName !== "BUTTON") {
@@ -82,18 +96,40 @@ function useRuntime() {
   }, []);
 }
 
+/** The unframed phone, with horizontal swipes stepping the story. Vertical scroll inside the app is untouched. */
+function SwipePhone() {
+  const swipe = useSwipe();
+  return (
+    <div {...swipe} className="min-h-0 min-w-0 flex-1 touch-pan-y">
+      <PhoneStage framed={false} />
+    </div>
+  );
+}
+
 export function Simulator() {
-  const desktop = useDesktop();
+  const layout = useLayout();
   const { step } = useStep();
   useRuntime();
 
-  if (desktop === null) return <div className="h-dvh w-full bg-bg" />;
+  if (layout === null) return <div className="h-dvh w-full bg-bg" />;
 
-  if (!desktop) {
+  if (layout === "stack") {
     return (
-      <main className="relative h-dvh w-full bg-black">
-        <PhoneStage framed={false} />
-        <MiniControls />
+      <main className="flex h-dvh w-full flex-col bg-black">
+        <SwipePhone />
+        <MobileDock />
+        <About />
+      </main>
+    );
+  }
+
+  if (layout === "split") {
+    return (
+      <main className="flex h-dvh w-full bg-black">
+        <div className="flex min-w-0 shrink-0 basis-[min(48%,calc(100dvh*0.61))] flex-col">
+          <SwipePhone />
+        </div>
+        <SidePanel />
         <About />
       </main>
     );
@@ -110,10 +146,10 @@ export function Simulator() {
           <SimMap />
           <div className="pointer-events-none absolute inset-0 p-4">
             <div className="absolute bottom-4 left-4 flex flex-col gap-3">
-              <ClockChip />
-              {step.cliff && <CliffGauge />}
+              {!step.cliff && <ClockChip />}
               <Caption />
             </div>
+            {step.cliff && <CliffStage className="absolute left-4 right-[332px] top-4" />}
             <div className="absolute bottom-8 right-4 top-4 flex w-[300px] flex-col justify-between gap-3">
               <LeverTracker />
               <div className="flex min-h-0 flex-col gap-3 overflow-hidden">

@@ -10,6 +10,8 @@ import { StatusBar } from "./ui";
 const W = 390;
 const H = 844;
 const BEZEL = 13;
+/** Shortest layout height the screens are drawn for when the app runs unframed */
+const MIN_H = 640;
 
 function Screens() {
   const { step } = useStep();
@@ -84,12 +86,18 @@ export function PhoneStage({ framed }: { framed: boolean }) {
     );
   }
 
-  const scale = box.w / W;
+  // Unframed: fill the width, but never scale past what keeps the app's MIN_H of layout height,
+  // so a landscape phone or a tablet gets a smaller centred phone instead of a clipped giant one.
+  // Tall boxes (tablets) cap at the design height and centre the phone rather than stretch it.
+  const scale = Math.min(box.w / W, box.h / MIN_H);
+  const height = Math.min(box.h / scale, H);
   return (
-    <div ref={ref} className="relative h-full w-full overflow-hidden bg-black">
+    <div ref={ref} className="relative flex h-full w-full items-center justify-center overflow-hidden bg-black">
       {box.w > 0 && (
-        <div style={{ width: W, height: box.h / scale, transform: `scale(${scale})`, transformOrigin: "top left" }}>
-          <PhoneApp framed={false} height={box.h / scale} />
+        <div style={{ width: W * scale, height: height * scale }} className="overflow-hidden">
+          <div style={{ width: W, height, transform: `scale(${scale})`, transformOrigin: "top left" }}>
+            <PhoneApp framed={false} height={height} />
+          </div>
         </div>
       )}
     </div>

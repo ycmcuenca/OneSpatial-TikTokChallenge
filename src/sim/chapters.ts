@@ -14,7 +14,7 @@ const INTRO: Step[] = [
       "5.0M orders a day, 70% paid by Cash on Delivery, and 29% of those COD orders fail. That is ~1.015M failed deliveries every single day.",
     clock: clk(1, "9:41 AM"),
     phone: { screen: "feed", mode: "idle" },
-    map: { camera: "national" },
+    map: { camera: "national", region: "loss" },
     hud: {
       eyebrow: "The monthly value leak",
       value: "₱5.3B",
@@ -24,7 +24,7 @@ const INTRO: Step[] = [
         { label: "Paid by COD", value: "70%", tone: "cyan" },
         { label: "COD failure rate", value: "29%", tone: "red" },
         { label: "Logistics costs", value: "₱3.3B", tone: "red" },
-        { label: "Forgone commissions", value: "₱2.0B", tone: "cyan" },
+        { label: "Forgone commissions", value: "₱2.0B", tone: "red" },
       ],
       note: "~1.015M failed COD orders every day.",
     },
@@ -33,19 +33,19 @@ const INTRO: Step[] = [
   {
     id: "where",
     tag: "intro",
-    title: "Failure concentrates in VisMin routes",
+    title: "Failure concentrates in Visayas–Mindanao routes",
     caption:
-      "VisMin carries 50% of volume. Past a 4-day SLA, buyer intent fades non-linearly: 33% failure, against ~20% in Metro Manila and Luzon.",
+      "Visayas–Mindanao (VisMin) carries 50% of volume. Once delivery runs past 4 days (the SLA, or promised delivery time), buyer intent fades non-linearly: 33% failure, against ~20% in Metro Manila and Luzon.",
     clock: clk(1, "9:41 AM"),
     phone: { screen: "feed", mode: "idle" },
-    map: { camera: "national", cities: true },
+    map: { camera: "national", cities: true, region: "loss" },
     hud: {
       eyebrow: "What the case says",
       rows: [
-        { label: "VisMin volume share", value: "50%", tone: "red" },
+        { label: "Visayas–Mindanao volume share", value: "50%", tone: "red" },
         { label: "Fashion & electronics failure peak", value: "33%", tone: "red" },
-        { label: "Metro Manila / Luzon SLA", value: "1–3 days", tone: "cyan" },
-        { label: "VisMin SLA", value: "4–7+ days", tone: "red" },
+        { label: "Delivery · Metro Manila / Luzon", value: "1–3 days", tone: "cyan" },
+        { label: "Delivery · Visayas–Mindanao", value: "4–7+ days", tone: "red" },
       ],
       note: "Uncertainty fuels failures in high-intent categories.",
     },
@@ -114,7 +114,7 @@ const BASELINE: Step[] = [
     tag: "baseline",
     title: "Order placed. Then silence.",
     caption:
-      "XYZ Express economy: 4–6 days to VisMin. The order page is a passive tracker; nothing asks Earl whether he'll be home.",
+      "XYZ Express economy: 4–6 days to Cebu. The order page is a passive tracker; nothing asks Earl whether he'll be home.",
     clock: clk(1, "10:02 AM"),
     phone: { screen: "orders", mode: "plain-placed" },
     map: { camera: "national", pins: ["manila-hub", "dorm"], routes: [{ id: "xyz-main", tone: "xyz" }] },
@@ -125,7 +125,7 @@ const BASELINE: Step[] = [
     tag: "baseline",
     title: "Days at sea: the 4-day remorse cliff",
     caption:
-      "Pasig → Batangas → Cebu by economy truck and sea. Failure rates spike once transit passes 4 days, and nobody is reaching out to Earl.",
+      "Pasig → Batangas → Cebu by economy truck and sea. Failure rates spike once transit passes 4 days (the “remorse cliff”, when buyers lose interest), and nobody is reaching out to Earl.",
     clock: clk(1, "10:30 AM"),
     clockTo: clk(5, "9:00 PM"),
     phone: { screen: "orders", mode: "plain-transit" },
@@ -196,7 +196,7 @@ const BASELINE: Step[] = [
     caption: "Earl wanted the order. The system lost it, and he's 40% less likely to come back within 90 days.",
     clock: clk(11, "5:00 PM"),
     phone: { screen: "orders", mode: "plain-returned" },
-    map: { camera: "national", cities: true },
+    map: { camera: "national", cities: true, region: "loss" },
     hud: {
       eyebrow: "Cost of this failed COD order",
       value: "−₱259.90",
@@ -244,7 +244,7 @@ const PREVENT: Step[] = [
     id: "confirm",
     tag: "prevent",
     title: "CONFIRM: 1-tap availability window",
-    caption: "Earl picks when he can receive the parcel and locks his intent. One tap, no phone tag.",
+    caption: "This is Intent-Lock: Earl picks when he can receive the parcel and commits to the order. One tap, no phone tag.",
     clock: clk(6, "7:31 AM"),
     phone: { screen: "relay", mode: "alert" },
     map: { camera: "cebu", pins: ["cebu-hub", "dorm"] },
@@ -360,10 +360,10 @@ const PREVENT: Step[] = [
     hud: {
       eyebrow: "Lever 01 · Product",
       value: "₱1.171B / mo",
-      valueTone: "cyan",
+      valueTone: "ok",
       title: "Reverse logistics & cash handling cut",
       rows: [
-        { label: "Cost savings", value: "₱1.17B / mo (~₱39.08M daily)", tone: "cyan" },
+        { label: "Cost savings", value: "₱1.17B / mo (~₱39.08M daily)", tone: "ok" },
         { label: "Recovered commission", value: "₱410M / mo", tone: "ok" },
         { label: "Failure reduction target", value: "35%" },
       ],
@@ -411,7 +411,7 @@ const OPTIMIZE: Step[] = [
         { id: "xyz-main", tone: "xyz" },
       ],
       actors: [
-        { route: "ab-main", from: 0, to: 1, ms: 3000, kind: "plane", tone: "ab" },
+        { route: "ab-main", from: 0, to: 1, ms: 3400, kind: "plane", tone: "ab" },
         { route: "xyz-main", from: 0, to: 1, ms: 8500, kind: "truck", tone: "xyz" },
       ],
     },
@@ -437,7 +437,7 @@ const OPTIMIZE: Step[] = [
       valueTone: "cyan",
       rows: [
         { label: "Cash-handling fee", value: "₱0 (−₱60 avoided)", tone: "ok" },
-        { label: "Coin rebate (10%)", value: "+₱150 coins", tone: "cyan" },
+        { label: "Coin rebate (10%)", value: "+₱150 coins", tone: "ok" },
         { label: "Remorse cliff", value: "Skipped", tone: "ok" },
       ],
     },
@@ -459,10 +459,10 @@ const OPTIMIZE: Step[] = [
       valueTone: "red",
       rows: [
         { label: "Courier", value: "XYZ Express (economy)" },
-        { label: "Failure risk", value: "33% where SLA > 4 days", tone: "red" },
+        { label: "Failure risk", value: "33% when delivery takes over 4 days", tone: "red" },
         { label: "Regional COD limits", value: "Fair, still available", tone: "cyan" },
       ],
-      note: "Try going back and choosing GCash. Lever 01's Intent-Lock still protects this delivery.",
+      note: "Try going back and choosing GCash. Lever 01's Intent-Lock (the delivery-morning confirmation) still protects this delivery.",
     },
     when: (c) => c.payment === "cod",
     cliff: true,
@@ -471,7 +471,7 @@ const OPTIMIZE: Step[] = [
     id: "impact",
     tag: "optimize",
     title: "Lever 02 · Operations: monthly impact",
-    caption: "Shifting 15% of VisMin COD to prepaid via 24h express and a 10% GCash rebate.",
+    caption: "Shifting 15% of Cash-on-Delivery orders in Visayas–Mindanao to prepaid, via 24h express and a 10% GCash rebate.",
     clock: clk(3, "10:40 AM"),
     phone: { screen: "orders", mode: "opt-delivered-ab" },
     map: {
@@ -486,13 +486,13 @@ const OPTIMIZE: Step[] = [
     hud: {
       eyebrow: "Lever 02 · Operations",
       value: "₱423.7M / mo",
-      valueTone: "cyan",
+      valueTone: "ok",
       title: "Net monthly benefit",
       rows: [
-        { label: "Target", value: "VisMin COD: 50% volume, 33% failure" },
+        { label: "Target", value: "Visayas–Mindanao COD: 50% volume, 33% failure" },
         { label: "Prepaid migration", value: "15% → 262,500 orders/day", tone: "cyan" },
         { label: "Fewer failures", value: "99,750 / day", tone: "ok" },
-        { label: "Investment", value: "₱7M (₱2M 3PL API + ₱5M/mo GCash pool)", tone: "red" },
+        { label: "Investment", value: "₱7M: ₱2M 3PL courier API + ₱5M/mo GCash pool" },
       ],
       note: "~₱445.9M/mo gross savings − ₱5M/mo GCash incentives.",
     },
@@ -530,7 +530,7 @@ const PROTECT: Step[] = [
       rows: [
         { label: "Fashion", value: "28% share · 33% fail", tone: "red" },
         { label: "Electronics", value: "15% share · 30% fail", tone: "red" },
-        { label: "Electronics AOV", value: "₱1,200–₱1,800" },
+        { label: "Electronics avg. order value", value: "₱1,200–₱1,800" },
       ],
       note: "Fashion / electronics via livestream or short video.",
     },
@@ -716,7 +716,7 @@ const PROTECT: Step[] = [
     hud: {
       eyebrow: "Lever 03 · Policy",
       value: "₱625M / mo",
-      valueTone: "cyan",
+      valueTone: "ok",
       title: "Policy value",
       rows: [
         { label: "Targeted model", value: "15% failure reduction" },
@@ -734,48 +734,40 @@ const IMPACT: Step[] = [
     id: "levers",
     tag: "impact",
     title: "Prevent · Optimize · Protect",
-    caption: "Three levers, built for TikTok Shop PH's 3PL-only model. Each figure below is shown as stated on its own slide.",
+    caption: "Three levers, built for TikTok Shop PH, which ships only through third-party couriers (3PLs). Each figure is shown as stated on its own slide, and the three are not added together.",
     clock: clk(1, "9:41 AM"),
     phone: { screen: "recap", mode: "levers" },
     map: {
       camera: "national",
       cities: true,
+      region: "gain",
       routes: [
-        { id: "ab-main", tone: "ab" },
-        { id: "xyz-main", tone: "xyz" },
+        { id: "ab-main", tone: "ok" },
+        { id: "xyz-main", tone: "ok" },
       ],
-    },
-    hud: {
-      eyebrow: "Monthly value by lever",
-      rows: [
-        { label: "01 Prevent · costs saved", value: "₱1.171B", tone: "cyan" },
-        { label: "01 Prevent · recovered commission", value: "₱410M", tone: "ok" },
-        { label: "02 Optimize · net monthly benefit", value: "₱423.7M", tone: "cyan" },
-        { label: "03 Protect · policy value", value: "₱625M", tone: "cyan" },
-      ],
-      note: "Lever figures are shown as stated on each slide and are not added together here.",
     },
     sfx: "impact",
   },
   {
     id: "total",
     tag: "impact",
-    title: "TikTok Relay: recapturing ₱1.45B / month",
-    caption: "A phased pilot capped at about ₱1M proves it before scaling Philippine social commerce.",
+    title: "TikTok Relay: proven first by a pilot capped near ₱1M",
+    caption: "The total deck claim is not the sum of the three lever figures. A phased pilot capped at about ₱1M proves it before scaling Philippine social commerce.",
     clock: clk(1, "9:41 AM"),
     phone: { screen: "recap", mode: "total" },
     map: {
       camera: "national",
       cities: true,
+      region: "gain",
       routes: [
-        { id: "ab-main", tone: "ab" },
-        { id: "xyz-main", tone: "xyz" },
+        { id: "ab-main", tone: "ok" },
+        { id: "xyz-main", tone: "ok" },
       ],
     },
     hud: {
-      eyebrow: "Total deck claim",
+      eyebrow: "Total deck claim · not the sum of the three lever figures",
       value: "₱1.45B / mo",
-      valueTone: "red",
+      valueTone: "ok",
       title: "Phased pilot cap",
       rows: [
         { label: "Product prototype + buyer flow", value: "250,000" },
@@ -788,14 +780,31 @@ const IMPACT: Step[] = [
     },
     sfx: "impact",
   },
+  {
+    id: "earl",
+    tag: "impact",
+    title: "Earl gets his earbuds",
+    caption:
+      "Prevent locked his window, Optimize sent the order by priority express, and Protect kept it deliberate. Instead of a return to sender, Earl has his earbuds.",
+    clock: clk(3, "10:40 AM"),
+    phone: { screen: "recap", mode: "earl" },
+    map: {
+      camera: "street",
+      pins: ["dorm"],
+      routes: [{ id: "last-mile", tone: "ok" }],
+      actors: [{ route: "last-mile", from: 1, to: 1, ms: 1, kind: "rider", tone: "ok" }],
+      winPulse: true,
+    },
+    sfx: "impact",
+  },
 ];
 
 export const CHAPTERS: Chapter[] = [
-  { id: "intro", tag: "intro", label: "The leak", short: "Intro", steps: INTRO },
-  { id: "baseline", tag: "baseline", label: "Without Relay", short: "Baseline", steps: BASELINE },
-  { id: "prevent", tag: "prevent", label: "01 Prevent", short: "Prevent", steps: PREVENT },
-  { id: "optimize", tag: "optimize", label: "02 Optimize", short: "Optimize", steps: OPTIMIZE },
-  { id: "protect", tag: "protect", label: "03 Protect", short: "Protect", steps: PROTECT },
+  { id: "intro", tag: "intro", label: "The leak", short: "The leak", steps: INTRO },
+  { id: "baseline", tag: "baseline", label: "Without Relay", short: "Without Relay", steps: BASELINE },
+  { id: "prevent", tag: "prevent", label: "Prevent", short: "Prevent", steps: PREVENT },
+  { id: "optimize", tag: "optimize", label: "Optimize", short: "Optimize", steps: OPTIMIZE },
+  { id: "protect", tag: "protect", label: "Protect", short: "Protect", steps: PROTECT },
   { id: "impact", tag: "impact", label: "Impact", short: "Impact", steps: IMPACT },
 ];
 

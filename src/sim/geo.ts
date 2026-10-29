@@ -1,4 +1,5 @@
 import routesJson from "@/data/routes.json";
+import visminJson from "@/data/vismin.json";
 import type { PinId, RouteId } from "./types";
 
 export type LngLat = [number, number];
@@ -110,6 +111,15 @@ export const CITIES: CityDef[] = [
   { name: "Cebu", at: [123.89, 10.31], region: "vismin", sla: "4–7 days", fail: "33% fail", side: "right" },
   { name: "Cagayan de Oro", at: [124.65, 8.48], region: "vismin", sla: "4–7 days", fail: "33% fail", side: "right" },
   { name: "Davao", at: [125.6, 7.07], region: "vismin", sla: "4–7 days", fail: "33% fail", side: "right" },
+];
+
+/** Visayas–Mindanao provinces, simplified (scripts/build-region.mjs) */
+export const VISMIN = visminJson as unknown as GeoJSON.Feature<GeoJSON.MultiPolygon>;
+
+/** Luzon-to-Cebu corridor, for steps whose top of the map is given to the remorse-cliff stage */
+export const CORRIDOR_BOUNDS: [[number, number], [number, number]] = [
+  [120.2, 9.9],
+  [125.0, 15.0],
 ];
 
 export const NATIONAL_BOUNDS: [[number, number], [number, number]] = [

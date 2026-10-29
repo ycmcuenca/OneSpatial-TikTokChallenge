@@ -22,8 +22,12 @@ export const formatTime = (totalMin: number) => {
   return { day, time: `${h12}:${mm} ${h24 >= 12 ? "PM" : "AM"}` };
 };
 
-/** Simulated clock: eases from `step.clock` to `step.clockTo` while the map actors move */
-export function useSimClock(): Clock {
+/**
+ * Simulated clock: runs from `step.clock` to `step.clockTo` while the map actors move.
+ * Linear on purpose: the remorse-cliff stage reads days off it, so equal time must cover equal distance.
+ * `elapsed` is days since Day 1, 00:00.
+ */
+export function useSimClock(): Clock & { elapsed: number } {
   const { step } = useStep();
   const entry = useSim((s) => s.entry);
   const window = useSim((s) => s.choices.window);
@@ -46,8 +50,7 @@ export function useSimClock(): Clock {
     const t0 = performance.now();
     const tick = (now: number) => {
       const k = Math.min(1, (now - t0) / ms);
-      const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-      setAnim({ entry, v: from + (to - from) * e });
+      setAnim({ entry, v: from + (to - from) * k });
       if (k < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -55,5 +58,6 @@ export function useSimClock(): Clock {
   }, [entry, from, to, ms]);
 
   // Until this entry's first frame lands, show the starting time
-  return formatTime(from === to || anim.entry !== entry ? from : anim.v);
+  const v = from === to || anim.entry !== entry ? from : anim.v;
+  return { ...formatTime(v), elapsed: v / 1440 };
 }

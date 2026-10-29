@@ -104,7 +104,7 @@ export function TabBar({ active }: { active: "home" | "shop" | "relay" | "inbox"
       {items.map((it) => {
         const on = it.id === active;
         return (
-          <div key={it.id} className={`flex w-16 flex-col items-center gap-0.5 text-[10px] ${on ? "text-white" : "text-white/45"}`}>
+          <div key={it.id} className={`flex w-16 flex-col items-center gap-0.5 text-[12px] ${on ? "text-white" : "text-white/60"}`}>
             {it.id === "relay" ? (
               <span className={`grid h-7 w-7 place-items-center rounded-full ${on ? "bg-cyan text-black" : "bg-white/15"}`}>
                 <Icon name="up" size={16} />

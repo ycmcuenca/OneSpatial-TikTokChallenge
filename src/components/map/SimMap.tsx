@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import MapGL, { Layer, Marker, Source, type MapRef } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { CITIES, NATIONAL_BOUNDS, PINS, ROUTES, lineFeature, pointAt, sliceRoute, type CityDef } from "@/sim/geo";
+import { CITIES, CORRIDOR_BOUNDS, NATIONAL_BOUNDS, PINS, ROUTES, VISMIN, lineFeature, pointAt, sliceRoute, type CityDef } from "@/sim/geo";
 import { useSim, useStep } from "@/sim/store";
 import type { Actor, CameraId, Tone } from "@/sim/types";
 
@@ -18,11 +18,13 @@ const TONE: Record<Tone, string> = {
   ab: "#25f4ee",
   rider: "#ffd24a",
   fail: "#fe2c55",
-  ok: "#3ddc97",
+  ok: "#58e088",
 };
 
 // Space the overlay cards occupy on the map, so the camera centres on what is left.
 const PAD = { top: 80, bottom: 210, left: 30, right: 340 };
+// Steps that show the remorse-cliff stage give the top of the map to it and frame the Luzon-to-Cebu corridor below.
+const CLIFF_PAD = { top: 262, bottom: 200, left: 30, right: 340 };
 
 const CAMS: Record<Exclude<CameraId, "national">, { center: [number, number]; zoom: number; pitch: number; bearing: number }> = {
   cebu: { center: [123.918, 10.34], zoom: 12.4, pitch: 0, bearing: 0 },
@@ -74,14 +76,14 @@ function ActorLayer({ actor, idx }: { actor: Actor; idx: number }) {
 
 function PinMarker({ id, compact }: { id: keyof typeof PINS; compact: boolean }) {
   const p = PINS[id];
-  const ring = p.tone === "cyan" ? "#25f4ee" : p.tone === "red" ? "#fe2c55" : p.tone === "ok" ? "#3ddc97" : "#ffffff";
+  const ring = p.tone === "cyan" ? "#25f4ee" : p.tone === "red" ? "#fe2c55" : p.tone === "ok" ? "#58e088" : "#ffffff";
   return (
     <Marker longitude={p.at[0]} latitude={p.at[1]} anchor="bottom">
       <div className="pop-in flex flex-col items-center">
         {!(compact && p.iconOnly) && (
           <div className="whitespace-nowrap rounded-lg border bg-black/85 px-2 py-1 text-center shadow-lg" style={{ borderColor: `${ring}66` }}>
-            <div className="text-[11px] font-bold leading-tight">{p.label}</div>
-            {!compact && p.sub && <div className="text-[10px] leading-tight text-white/55">{p.sub}</div>}
+            <div className="text-label font-bold leading-tight">{p.label}</div>
+            {!compact && p.sub && <div className="text-label leading-tight text-white/70">{p.sub}</div>}
           </div>
         )}
         <div className="relative mt-1 grid h-8 w-8 place-items-center rounded-full border-2 bg-black/85 text-[15px]" style={{ borderColor: ring }}>
@@ -92,9 +94,9 @@ function PinMarker({ id, compact }: { id: keyof typeof PINS; compact: boolean })
   );
 }
 
-function CityMarker({ city }: { city: CityDef }) {
+function CityMarker({ city, resolved }: { city: CityDef; resolved: boolean }) {
   const vis = city.region === "vismin";
-  const color = vis ? "#fe2c55" : "#25f4ee";
+  const color = resolved ? TONE.ok : vis ? "#fe2c55" : "#25f4ee";
   return (
     <Marker longitude={city.at[0]} latitude={city.at[1]} anchor="center">
       <div className="pop-in relative">
@@ -105,10 +107,12 @@ function CityMarker({ city }: { city: CityDef }) {
           className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg border bg-black/85 px-2 py-1 ${city.side === "left" ? "right-5 text-right" : "left-5"}`}
           style={{ borderColor: `${color}66` }}
         >
-          <div className="text-[11px] font-bold leading-tight">{city.name}</div>
-          <div className="text-[10px] font-semibold leading-tight" style={{ color }}>
-            {city.sla} · {city.fail}
-          </div>
+          <div className="text-label font-bold leading-tight">{city.name}</div>
+          {!resolved && (
+            <div className="text-label font-semibold leading-tight tabular-nums" style={{ color }}>
+              {city.sla} · {city.fail}
+            </div>
+          )}
         </div>
       </div>
     </Marker>
@@ -123,17 +127,19 @@ export function SimMap() {
   const [ready, setReady] = useState(false);
   const cam = step.map.camera;
 
-  const camRef = useRef(cam);
+  const cliff = !!step.cliff;
+  const viewRef = useRef({ cam, cliff });
   useEffect(() => {
-    camRef.current = cam;
-  }, [cam]);
+    viewRef.current = { cam, cliff };
+  }, [cam, cliff]);
 
   const applyCamera = (duration: number) => {
     const map = mapRef.current;
     if (!map) return;
-    const c = camRef.current;
-    if (c === "national") map.fitBounds(NATIONAL_BOUNDS, { padding: PAD, pitch: 0, bearing: 0, duration, essential: true });
-    else map.flyTo({ ...CAMS[c], padding: PAD, duration, essential: true });
+    const { cam: c, cliff: staged } = viewRef.current;
+    const padding = staged ? CLIFF_PAD : PAD;
+    if (c === "national") map.fitBounds(staged ? CORRIDOR_BOUNDS : NATIONAL_BOUNDS, { padding, pitch: 0, bearing: 0, duration, essential: true });
+    else map.flyTo({ ...CAMS[c], padding, duration, essential: true });
   };
 
   // Keep the GL canvas in step with its panel (the dynamic import can finish before layout settles),
@@ -158,7 +164,7 @@ export function SimMap() {
     if (!ready) return;
     mapRef.current?.resize();
     applyCamera(ready && entry > 0 ? 1700 : 0);
-  }, [cam, ready, entry]);
+  }, [cam, cliff, ready, entry]);
 
   const m = step.map;
   const compact = cam === "national";
@@ -182,6 +188,19 @@ export function SimMap() {
       attributionControl={{ compact: true }}
       maxPitch={60}
     >
+      {/* Always mounted so the tint cross-fades between loss, gain and off instead of popping */}
+      <Source id="vismin" type="geojson" data={VISMIN}>
+        <Layer
+          id="vismin-fill"
+          type="fill"
+          paint={{
+            "fill-color": m.region === "gain" ? TONE.ok : TONE.fail,
+            "fill-opacity": m.region === "gain" ? 0.16 : m.region === "loss" ? 0.2 : 0,
+            "fill-color-transition": { duration: 900 },
+            "fill-opacity-transition": { duration: 900 },
+          }}
+        />
+      </Source>
       {m.routes?.map((r) => (
         <Source key={`base-${r.id}`} id={`base-${r.id}`} type="geojson" data={BASE[r.id]}>
           <Layer
@@ -196,10 +215,15 @@ export function SimMap() {
         <ActorLayer key={`${entry}-${i}`} actor={a} idx={i} />
       ))}
       {m.pins?.map((id) => <PinMarker key={id} id={id} compact={compact} />)}
-      {m.cities && CITIES.map((c) => <CityMarker key={c.name} city={c} />)}
+      {m.cities && CITIES.map((c) => <CityMarker key={c.name} city={c} resolved={m.region === "gain"} />)}
       {m.failPulse && (
         <Marker longitude={PINS.dorm.at[0]} latitude={PINS.dorm.at[1]} anchor="center">
           <span className="pin-pulse block h-20 w-20 rounded-full border-2 border-red bg-red/30" />
+        </Marker>
+      )}
+      {m.winPulse && (
+        <Marker longitude={PINS.dorm.at[0]} latitude={PINS.dorm.at[1]} anchor="center">
+          <span className="pin-pulse block h-20 w-20 rounded-full border-2 border-ok bg-ok/30" />
         </Marker>
       )}
     </MapGL>

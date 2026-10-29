@@ -17,10 +17,10 @@ function Countdown() {
     <div className="relative mx-auto grid h-32 w-32 place-items-center rounded-full" style={{ background: `conic-gradient(#25f4ee ${pct}%, rgba(255,255,255,0.1) 0)` }}>
       <div className="grid h-[112px] w-[112px] place-items-center rounded-full bg-[#14161b]">
         <div className="text-center">
-          <div className="text-[26px] font-black tabular-nums">
+          <div className="text-[26px] font-extrabold tracking-tight tabular-nums">
             {mm}:{ss}
           </div>
-          <div className="text-[10px] uppercase tracking-wider text-white/50">left to cancel free</div>
+          <div className="text-[12px] text-white/65">left to cancel free</div>
         </div>
       </div>
     </div>
@@ -37,12 +37,12 @@ export function Overlay({ id }: { id: OverlayId }) {
               <Icon name="up" size={20} />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="flex items-center justify-between text-[11px] text-white/50">
-                <span className="font-bold uppercase tracking-wide">TikTok Relay</span>
+              <span className="flex items-center justify-between text-[12px] text-white/60">
+                <span className="font-semibold">TikTok Relay</span>
                 <span>now</span>
               </span>
               <span className="block text-[14px] font-bold">Delivery morning confirmation</span>
-              <span className="block text-[12.5px] leading-snug text-white/75">Your earbuds arrive today! Tap to confirm you&apos;ll be there. 📦</span>
+              <span className="block text-[13px] leading-snug text-white/75">Your earbuds arrive today! Tap to confirm you&apos;ll be there. 📦</span>
             </span>
           </Hot>
         </div>
@@ -53,7 +53,7 @@ export function Overlay({ id }: { id: OverlayId }) {
           <span className="grid h-20 w-20 place-items-center rounded-full bg-red/20 text-4xl">📵</span>
           <div className="text-[20px] font-extrabold">Missed call</div>
           <div className="text-[14px] text-white/70">Kuya Jun · XYZ Express rider</div>
-          <div className="rounded-2xl border border-red/50 bg-red/10 px-4 py-3 text-[13px] text-red">
+          <div className="rounded-2xl border border-red/50 bg-red/10 px-4 py-3 text-[13px] text-red-ink">
             Delivery attempt failed.
             <br />
             Customer not available at 11:20 AM.
@@ -64,13 +64,12 @@ export function Overlay({ id }: { id: OverlayId }) {
       return (
         <Sheet>
           <div className="text-center">
-            <div className="text-[11px] font-extrabold uppercase tracking-widest text-cyan">Remote doorstep payment</div>
-            <div className="mt-1 text-[18px] font-extrabold">Pay the rider ₱1,499 by QR</div>
+            <div className="text-[18px] font-extrabold leading-tight text-balance">Pay the rider ₱1,499 by QR</div>
             <div className="mt-4 flex justify-center">
               <Qr size={150} />
             </div>
-            <div className="mt-2 text-[11px] text-white/50">Scan with GCash or Maya · Kuya Jun is at your gate</div>
-            <Hot id="pay-now" className="mt-4 w-full rounded-full bg-gradient-to-r from-[#007cff] to-[#25f4ee] py-3.5 text-center text-[14px] font-extrabold text-white">
+            <div className="mt-2 text-[12px] text-white/65">Scan with GCash or Maya · Kuya Jun is at your gate</div>
+            <Hot id="pay-now" className="mt-4 w-full rounded-full bg-gradient-to-r from-[#007cff] to-[#25f4ee] py-3.5 text-center text-[14px] font-extrabold text-black">
               Pay with GCash
             </Hot>
             <Hot id="pay-cash" className="mt-2 w-full rounded-full bg-white/10 py-3 text-center text-[13px] font-bold">
@@ -83,8 +82,7 @@ export function Overlay({ id }: { id: OverlayId }) {
       return (
         <Sheet>
           <div className="text-center">
-            <div className="text-[11px] font-extrabold uppercase tracking-widest text-cyan">Cooling window · 30 minutes</div>
-            <div className="mb-4 mt-1 text-[18px] font-extrabold">Still want these sneakers?</div>
+            <div className="mb-4 text-[18px] font-extrabold leading-tight text-balance">Still want these sneakers?</div>
             <Countdown />
             <div className="mt-3 text-[12px] text-white/60">Livestream deals move fast. Cancel for free anytime in the next 30 minutes. Nothing ships until it ends.</div>
             <Hot id="keep" className="mt-4 w-full rounded-full bg-cyan py-3.5 text-center text-[14px] font-extrabold text-black">
@@ -105,7 +103,7 @@ export function Overlay({ id }: { id: OverlayId }) {
             </span>
             <div className="mt-3 text-[18px] font-extrabold">Escrow Shield is on</div>
             <div className="mt-1 text-[13px] text-white/65">Your ₱599 is held by TikTok until you inspect the parcel and confirm. Wrong size? Exchange it free.</div>
-            <div className="mt-4 flex justify-center gap-2 text-[11px] font-bold">
+            <div className="mt-4 flex justify-center gap-2 text-[12px] font-bold">
               <span className="rounded-full bg-cyan/15 px-2.5 py-1 text-cyan">FUNDS HELD</span>
               <span className="rounded-full bg-cyan/15 px-2.5 py-1 text-cyan">SIZE-EXCHANGE GUARANTEE</span>
             </div>
@@ -119,11 +117,10 @@ export function Overlay({ id }: { id: OverlayId }) {
       return (
         <Sheet>
           <div className="text-center">
-            <div className="text-[11px] font-extrabold uppercase tracking-widest text-cyan">Secure handoff</div>
-            <div className="mt-1 text-[16px] font-extrabold">Share this code with the rider</div>
+            <div className="text-[18px] font-extrabold leading-tight text-balance">Share this code with the rider</div>
             <div className="my-4 flex justify-center gap-2">
               {["4", "8", "2", "9"].map((d, i) => (
-                <span key={i} className="grid h-14 w-12 place-items-center rounded-xl border border-cyan/60 bg-cyan/10 text-[28px] font-black text-cyan">
+                <span key={i} className="grid h-14 w-12 place-items-center rounded-xl border border-cyan/60 bg-cyan/10 text-[28px] font-extrabold tabular-nums text-cyan">
                   {d}
                 </span>
               ))}
